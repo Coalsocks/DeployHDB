@@ -4,9 +4,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from pycaret.regression import load_model
 
-from google.colab import drive
-drive.mount('/content/drive')
-
 # Set page config
 st.set_page_config(page_title="HDB Resale Prices Dashboard", layout="wide")
 
@@ -14,15 +11,13 @@ st.set_page_config(page_title="HDB Resale Prices Dashboard", layout="wide")
 st.title("HDB Resale Prices Dashboard")
 
 # Load dataset
-# @st.cache
-# def load_data():
-#     data = pd.read_csv('/content/drive/MyDrive/Data Sprint/data/model2.csv')
-#     return data
+@st.cache
+def load_data():
+    data = pd.read_csv('/content/drive/MyDrive/Data Sprint/data/model2.csv')
+    return data
 
 
-# df = load_data()
-
-from pycaret.regression import *
+df = load_data()
 model = load_model('best_model')
 
 # Display the dataset
