@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import pycaret.regression import *
+from pycaret.regression import load_model
 
 from google.colab import drive
 drive.mount('/content/drive')
