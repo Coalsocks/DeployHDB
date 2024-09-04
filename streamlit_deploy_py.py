@@ -22,7 +22,7 @@ st.title("HDB Resale Prices Dashboard")
 # df = load_data()
 
 from pycaret.regression import *
-model = load_model('/content/drive/MyDrive/Data Sprint/best_model')
+model = load_model('best_model')
 
 # Display the dataset
 st.subheader("Dataset Overview")
