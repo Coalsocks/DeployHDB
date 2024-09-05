@@ -31,7 +31,28 @@ flat_type = st.selectbox('Flat Type', ['1 Room', '2 Room', '3 Room', '4 Room', '
 hdb_age = st.number_input('HDB Age (years)', min_value=0, max_value=99, value=20)
 total_dwelling_units = st.number_input('Total Dwelling Units', min_value=1, value=100)
 remaining_lease = st.number_input('Remaining Lease (years)', min_value=1, value=60)
-amenities_1km = st.number_input('Amenities within 1km', min_value=0, value=5)
+
+
+#amenities_1km = st.number_input('Amenities within 1km', min_value=0, value=5)
+# Adding the amenities score based on user input
+st.sidebar.subheader("Amenities within 1km")
+mall_nearby = st.sidebar.checkbox('Mall')
+hawker_nearby = st.sidebar.checkbox('Hawker')
+mrt_nearby = st.sidebar.checkbox('MRT Station')
+bus_stop_nearby = st.sidebar.checkbox('Bus Stop')
+
+# Calculate amenities score
+amenities_score = 0
+if mall_nearby:
+    amenities_score += 1
+if hawker_nearby:
+    amenities_score += 1
+if mrt_nearby:
+    amenities_score += 1
+if bus_stop_nearby:
+    amenities_score += 1
+
+
 pri_dist_vac = st.number_input('Primary School Distance (Vacancy)', min_value=0, value=10)
 
 # Define user inputs for the consolidated dummy variables
@@ -77,7 +98,7 @@ if st.button('Submit'):
     input_data['hdb_age'] = user_input['hdb_age']
     input_data['total_dwelling_units'] = user_input['total_dwelling_units']
     input_data['remaining_lease'] = user_input['remaining_lease']
-    input_data['amenities_1km'] = user_input['amenities_1km']
+    input_data['amenities_1km'] = amenities_score
     input_data['pri_dist_vac'] = user_input['pri_dist_vac']
 
     # Map dummy variables based on user selection
