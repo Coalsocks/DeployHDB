@@ -1,93 +1,52 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-from pycaret.regression import load_model
 
-# Set page config
-st.set_page_config(page_title="HDB Resale Prices Dashboard", layout="wide")
+# Load data to get structure (optional if loading directly from the CSV file)
+data = pd.read_csv('X_train_transformed.csv')
 
-# Title of the dashboard
-st.title("HDB Resale Prices Dashboard")
+# Create a dictionary to map dummy variable groups to their base inputs
+dummy_mappings = {
+    'region': ['Central', 'East', 'North', 'Others', 'West'],
+    'flat_model': ['2-room', 'Adjoined flat', 'Apartment', 'DBSS', 'Improved', 
+                   'Improved-Maisonette', 'Maisonette', 'Model A', 'Model A-Maisonette', 
+                   'Model A2', 'Multi Generation', 'New Generation', 
+                   'Premium Apartment', 'Premium Apartment Loft', 
+                   'Premium Maisonette', 'Simplified', 'Standard', 'Terrace', 
+                   'Type S1', 'Type S2'],
+    'storey_category': ['1-5', '6-10', '11-15', '16-20', '21-25', 
+                        '26-30', '31-35', '36-40', '41-45', '46-50', '>50']
+}
 
-# Load dataset
-@st.cache
-def load_data():
-    data = pd.read_csv('/content/drive/MyDrive/Data Sprint/data/model2.csv')
-    return data
+# Define user inputs for the non-dummy columns
+tranc_year_month = st.text_input('Transaction Year-Month', '2024-01')
+town = st.text_input('Town', 'Example Town')
+flat_type = st.selectbox('Flat Type', ['1 Room', '2 Room', '3 Room', '4 Room', '5 Room', 'Executive'])
+hdb_age = st.number_input('HDB Age (years)', min_value=0, max_value=99, value=20)
+total_dwelling_units = st.number_input('Total Dwelling Units', min_value=1, value=100)
+remaining_lease = st.number_input('Remaining Lease (years)', min_value=1, value=60)
+amenities_1km = st.number_input('Amenities within 1km', min_value=0, value=5)
+pri_dist_vac = st.number_input('Primary School Distance (Vacancy)', min_value=0, value=10)
 
+# Define user inputs for the consolidated dummy variables
+region = st.selectbox('Region', dummy_mappings['region'])
+flat_model = st.selectbox('Flat Model', dummy_mappings['flat_model'])
+storey_category = st.selectbox('Storey Category', dummy_mappings['storey_category'])
 
-df = load_data()
-model = load_model('best_model')
+# When the user submits the form, you can collect all inputs and process further
+if st.button('Submit'):
+    user_input = {
+        'Tranc_YearMonth': tranc_year_month,
+        'town': town,
+        'flat_type': flat_type,
+        'hdb_age': hdb_age,
+        'total_dwelling_units': total_dwelling_units,
+        'remaining_lease': remaining_lease,
+        'amenities_1km': amenities_1km,
+        'pri_dist_vac': pri_dist_vac,
+        'region': region,
+        'flat_model': flat_model,
+        'storey_category': storey_category
+    }
 
-# Display the dataset
-st.subheader("Dataset Overview")
-st.write(df.head())
-
-# Sidebar filters
-st.sidebar.header("Filters")
-
-# # Filter by town
-# towns = df['region'].unique()
-# selected_town = st.sidebar.multiselect("Select Region(s):", regions, default=regions)
-
-# Filter by flat type
-flat_types = df['flat_type'].unique()
-selected_flat_type = st.sidebar.multiselect("Select Flat Type(s):", flat_types, default=flat_types)
-
-# # Filter by year
-# df['year'] = pd.to_datetime(df['month']).dt.year
-# years = df['year'].unique()
-# selected_year = st.sidebar.slider("Select Year Range:", int(years.min()), int(years.max()), (int(years.min()), int(years.max())))
-
-# # Apply filters
-# filtered_df = df[
-#     (df['region'].isin(selected_town)) &
-#     (df['flat_type'].isin(selected_flat_type)) &
-#     (df['year'].between(selected_year[0], selected_year[1]))
-
-# Summary statistics
-st.subheader("Summary Statistics")
-st.write(filtered_df.describe())
-
-# Visualization
-st.subheader("Visualizations")
-
-# # Distribution of Resale Prices
-# st.markdown("### Distribution of Resale Prices")
-# fig, ax = plt.subplots()
-# sns.histplot(filtered_df['resale_price'], bins=30, kde=True, ax=ax)
-# ax.set_title('Distribution of Resale Prices')
-# ax.set_xlabel('Resale Price')
-# ax.set_ylabel('Frequency')
-# st.pyplot(fig)
-
-# Average Resale Price by Town
-st.markdown("### Average Resale Price by Region")
-avg_price_by_town = filtered_df.groupby('region')['resale_price'].mean().sort_values()
-fig, ax = plt.subplots(figsize=(10, 8))
-avg_price_by_town.plot(kind='barh', ax=ax)
-ax.set_title('Average Resale Price by region')
-ax.set_xlabel('Average Resale Price')
-ax.set_ylabel('region')
-st.pyplot(fig)
-
-# Resale Price Trend over Time
-st.markdown("### Resale Price Trend over Time")
-avg_price_by_month = filtered_df.groupby('month')['resale_price'].mean()
-fig, ax = plt.subplots(figsize=(10, 6))
-avg_price_by_month.plot(ax=ax)
-ax.set_title('Resale Price Trend Over Time')
-ax.set_xlabel('Month')
-ax.set_ylabel('Average Resale Price')
-st.pyplot(fig)
-
-# Download filtered data
-st.subheader("Download Filtered Data")
-st.markdown("You can download the filtered data below:")
-csv = filtered_df.to_csv(index=False).encode('utf-8')
-st.download_button(label="Download CSV", data=csv, file_name='filtered_hdb_resale_prices.csv', mime='text/csv')
-
-# Run the app
-if __name__ == '__main__':
-    st.run()
+    # Display or further process the user input
+    st.write("User Input:", user_input)
