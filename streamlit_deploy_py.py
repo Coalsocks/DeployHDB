@@ -1,9 +1,10 @@
 import streamlit as st
 import pandas as pd
-from pycaret.regression import *
+import pickle
 
 # Load your trained PyCaret model
-model = load_model('best_model')
+with open('model.pkl', 'rb') as f:
+    model = pickle.load(f)
 
 # Create a dictionary to map dummy variable groups to their base inputs
 dummy_mappings = {
