@@ -94,7 +94,7 @@ if st.button('Submit'):
     input_df['town'] = input_df['town'].astype('category')
 
     # Make a prediction using the PyCaret model
-    prediction = predict_model(model, data=input_df)
+    prediction = model.predict(input_df)
 
     # Display the prediction result
     st.write(f'Predicted Output: {prediction[0]}')
