@@ -3,7 +3,7 @@ import pandas as pd
 import pickle
 
 # Load your trained PyCaret model
-with open('model.pkl', 'rb') as f:
+with open('best_model.pkl', 'rb') as f:
     model = pickle.load(f)
 
 # Create a dictionary to map dummy variable groups to their base inputs
