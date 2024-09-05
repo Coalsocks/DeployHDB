@@ -97,4 +97,4 @@ if st.button('Submit'):
     prediction = predict_model(model, data=input_df)
 
     # Display the prediction result
-    st.write(f'Predicted Output: {prediction["Label"].values[0]}')
+    st.write(f'Predicted Output: {prediction[0]}')
