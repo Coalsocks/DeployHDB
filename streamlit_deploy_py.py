@@ -51,7 +51,7 @@ if st.button('Submit'):
         'Executive': 6,
         'Multi-Generation': 7
     }
-    flat_type = flat_type_map[flat_type_input]
+    flat_type = flat_type_map[flat_type]
 
 
     
