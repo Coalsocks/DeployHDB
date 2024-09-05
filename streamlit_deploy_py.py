@@ -97,4 +97,4 @@ if st.button('Submit'):
     prediction = model.predict(input_df)
 
     # Display the prediction result
-    st.write(f'Predicted Output: {prediction[0]}')
+    st.success(f'The predicted resale price of the flat is ${prediction[0]:.2f}')
