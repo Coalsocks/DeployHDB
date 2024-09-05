@@ -1,4 +1,4 @@
 matplotlib
 seaborn
-pycaret
+pycaret==3.3.2
 scikit-learn
