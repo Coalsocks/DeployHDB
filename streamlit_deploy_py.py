@@ -26,7 +26,8 @@ dummy_mappings = {
 # Define user inputs for the non-dummy columns
 tranc_year_month = st.text_input('Transaction Year-Month', '2024-01')
 town = st.text_input('Town', 'Example Town')
-flat_type = st.selectbox('Flat Type', ['1 Room', '2 Room', '3 Room', '4 Room', '5 Room', 'Executive'])
+flat_type = st.selectbox('Flat Type', ['1 Room', '2 Room', '3 Room', '4 Room', '5 Room', 'Executive', 'Multi-Generation'])
+
 hdb_age = st.number_input('HDB Age (years)', min_value=0, max_value=99, value=20)
 total_dwelling_units = st.number_input('Total Dwelling Units', min_value=1, value=100)
 remaining_lease = st.number_input('Remaining Lease (years)', min_value=1, value=60)
@@ -40,6 +41,20 @@ storey_category = st.selectbox('Storey Category', dummy_mappings['storey_categor
 
 # When the user submits the form, you can collect all inputs and process further
 if st.button('Submit'):
+    # Ordinal mapping for flat_type
+    flat_type_map = {
+        '1 Room': 1,
+        '2 Room': 2,
+        '3 Room': 3,
+        '4 Room': 4,
+        '5 Room': 5,
+        'Executive': 6,
+        'Multi-Generation': 7
+    }
+    flat_type = flat_type_map[flat_type_input]
+
+
+    
     # Initialize the base user input with non-dummy variables
     user_input = {
         'Tranc_YearMonth': tranc_year_month,
