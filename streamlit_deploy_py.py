@@ -1,9 +1,6 @@
 import streamlit as st
 import pandas as pd
 
-# Load data to get structure (optional if loading directly from the CSV file)
-data = pd.read_csv('X_train_transformed.csv')
-
 # Create a dictionary to map dummy variable groups to their base inputs
 dummy_mappings = {
     'region': ['Central', 'East', 'North', 'Others', 'West'],
