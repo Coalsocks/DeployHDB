@@ -25,7 +25,7 @@ dummy_mappings = {
 
 # Move user inputs to the sidebar
 tranc_year_month = st.sidebar.text_input('Transaction Year-Month', '2024-01')
-town = st.sidebar.text_input('Town', 'Example Town')
+town = 'Example Town' #st.sidebar.text_input('Town', 'Example Town')
 flat_type = st.sidebar.selectbox('Flat Type', ['1 Room', '2 Room', '3 Room', '4 Room', '5 Room', 'Executive', 'Multi-Generation'])
 
 hdb_age = st.sidebar.number_input('HDB Age (years)', min_value=0, max_value=99, value=20)
