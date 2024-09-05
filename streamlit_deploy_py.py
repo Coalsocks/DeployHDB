@@ -1,13 +1,12 @@
 import streamlit as st
 import pandas as pd
-import pickle
-
-# Load X train columns
-data = pd.read_csv('x-columns.csv')
+from pycaret.regression import *
 
 # Load your trained PyCaret model
-with open('best_model.pkl', 'rb') as f:
-    model = pickle.load(f)
+model = load_model('best_model')  # Replace 'best_model' with the actual model filename if different
+
+# Load the dataset to get column names
+data = pd.read_csv('X_train_transformed.csv')  # Ensure you have the correct path
 
 # Create a dictionary to map dummy variable groups to their base inputs
 dummy_mappings = {
@@ -75,7 +74,7 @@ if st.button('Submit'):
     input_df = pd.DataFrame([input_data])
 
     # Make a prediction using the PyCaret model
-    prediction = model.predict(input_df)
+    prediction = predict_model(model, data=input_df)
 
     # Display the prediction result
-    st.write(f'Predicted Output: {prediction}')
+    st.write(f'Predicted Output: {prediction["Label"].values[0]}')
