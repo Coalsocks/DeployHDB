@@ -84,7 +84,7 @@ if st.button('Submit'):
         'hdb_age': hdb_age,
         'total_dwelling_units': total_dwelling_units,
         'remaining_lease': remaining_lease,
-        'amenities_1km': amenities_1km,
+        'amenities_1km': amenities_score,
         'pri_dist_vac': pri_dist_vac
     }
 
@@ -98,7 +98,7 @@ if st.button('Submit'):
     input_data['hdb_age'] = user_input['hdb_age']
     input_data['total_dwelling_units'] = user_input['total_dwelling_units']
     input_data['remaining_lease'] = user_input['remaining_lease']
-    input_data['amenities_1km'] = amenities_score
+    input_data['amenities_1km'] = user_input['amenities_1km']
     input_data['pri_dist_vac'] = user_input['pri_dist_vac']
 
     # Map dummy variables based on user selection
