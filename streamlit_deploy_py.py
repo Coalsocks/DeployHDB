@@ -73,6 +73,11 @@ if st.button('Submit'):
     # Convert the input_data into a DataFrame
     input_df = pd.DataFrame([input_data])
 
+    # Handle categorical columns: Replace strings with the expected categorical codes if required
+    # Ensure that `input_df` matches the format expected by the model
+    input_df['flat_type'] = input_df['flat_type'].astype('category')
+    input_df['town'] = input_df['town'].astype('category')
+
     # Make a prediction using the PyCaret model
     prediction = predict_model(model, data=input_df)
 
