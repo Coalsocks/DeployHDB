@@ -23,18 +23,16 @@ dummy_mappings = {
                         'storey_category_46-50', 'storey_category_>50']
 }
 
-# Define user inputs for the non-dummy columns
-tranc_year_month = st.text_input('Transaction Year-Month', '2024-01')
-town = st.text_input('Town', 'Example Town')
-flat_type = st.selectbox('Flat Type', ['1 Room', '2 Room', '3 Room', '4 Room', '5 Room', 'Executive', 'Multi-Generation'])
+# Move user inputs to the sidebar
+tranc_year_month = st.sidebar.text_input('Transaction Year-Month', '2024-01')
+town = st.sidebar.text_input('Town', 'Example Town')
+flat_type = st.sidebar.selectbox('Flat Type', ['1 Room', '2 Room', '3 Room', '4 Room', '5 Room', 'Executive', 'Multi-Generation'])
 
-hdb_age = st.number_input('HDB Age (years)', min_value=0, max_value=99, value=20)
-total_dwelling_units = st.number_input('Total Dwelling Units', min_value=1, value=100)
-remaining_lease = st.number_input('Remaining Lease (years)', min_value=1, value=60)
+hdb_age = st.sidebar.number_input('HDB Age (years)', min_value=0, max_value=99, value=20)
+total_dwelling_units = st.sidebar.number_input('Total Dwelling Units', min_value=1, value=100)
+remaining_lease = st.sidebar.number_input('Remaining Lease (years)', min_value=1, value=60)
 
-
-#amenities_1km = st.number_input('Amenities within 1km', min_value=0, value=5)
-# Adding the amenities score based on user input
+# Move amenities to the sidebar
 st.sidebar.subheader("Amenities within 1km")
 mall_nearby = st.sidebar.checkbox('Mall')
 hawker_nearby = st.sidebar.checkbox('Hawker')
@@ -52,16 +50,15 @@ if mrt_nearby:
 if bus_stop_nearby:
     amenities_score += 1
 
+pri_dist_vac = st.sidebar.number_input('Primary School Distance (Vacancy)', min_value=0, value=10)
 
-pri_dist_vac = st.number_input('Primary School Distance (Vacancy)', min_value=0, value=10)
+# Move dummy variable inputs to the sidebar
+region = st.sidebar.selectbox('Region', dummy_mappings['region'])
+flat_model = st.sidebar.selectbox('Flat Model', dummy_mappings['flat_model'])
+storey_category = st.sidebar.selectbox('Storey Category', dummy_mappings['storey_category'])
 
-# Define user inputs for the consolidated dummy variables
-region = st.selectbox('Region', dummy_mappings['region'])
-flat_model = st.selectbox('Flat Model', dummy_mappings['flat_model'])
-storey_category = st.selectbox('Storey Category', dummy_mappings['storey_category'])
-
-# When the user submits the form, you can collect all inputs and process further
-if st.button('Submit'):
+# Submit button remains in the main content area
+if st.sidebar.button('Submit'):
     # Ordinal mapping for flat_type
     flat_type_map = {
         '1 Room': 1,
@@ -74,8 +71,6 @@ if st.button('Submit'):
     }
     flat_type = flat_type_map[flat_type]
 
-
-    
     # Initialize the base user input with non-dummy variables
     user_input = {
         'Tranc_YearMonth': tranc_year_month,
@@ -110,7 +105,6 @@ if st.button('Submit'):
     input_df = pd.DataFrame([input_data])
 
     # Handle categorical columns: Replace strings with the expected categorical codes if required
-    # Ensure that `input_df` matches the format expected by the model
     input_df['flat_type'] = input_df['flat_type'].astype('category')
     input_df['town'] = input_df['town'].astype('category')
 
